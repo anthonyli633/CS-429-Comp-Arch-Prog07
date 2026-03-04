@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtdmm.a CMakeFiles/tdmm.dir/tdmm.c.o
+/usr/bin/ranlib libtdmm.a

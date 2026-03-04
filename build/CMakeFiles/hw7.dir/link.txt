@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/hw7.dir/main.c.o -o hw7  libtdmm/libtdmm.a 
