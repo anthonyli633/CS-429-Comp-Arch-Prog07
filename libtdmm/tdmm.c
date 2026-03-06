@@ -204,6 +204,17 @@ static int size_to_order(size_t bytes) {
     return max(size_to_order_(bytes), size_to_order_(hdr_size() + 4));
 }
 
+void t_reset(void) {
+    if (g_heap_base && g_heap_size) {
+        munmap(g_heap_base, g_heap_size);
+    }
+    g_heap_base = NULL;
+    g_heap_size = 0;
+    g_head = NULL;
+    g_metrics = (tdmm_metrics_t){0};
+    num_buddy_blocks = 0;
+    for (int i = 0; i <= MAX_ORDER; i++) free_lists[i] = NULL;
+}
 void t_init(alloc_strat_e strat) {
     g_strat = strat;
 	if (g_strat == MIXED) { mixed = 2; }
@@ -222,6 +233,7 @@ void t_init(alloc_strat_e strat) {
     g_heap_size = req;
 
     if (g_strat == BUDDY) {
+        g_head = NULL;
         for (int i = 0; i <= MAX_ORDER; i++) free_lists[i] = NULL;
         block_hdr_t *b = (block_hdr_t *)g_heap_base;
         b->size = (size_t)1 << MAX_ORDER;
